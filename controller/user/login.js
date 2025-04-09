@@ -1,4 +1,5 @@
-//login controller
+
+
 import bcrypt from "bcryptjs";
 import express from "express";
 import userModel from "../../model/user.js";
@@ -42,7 +43,7 @@ const login = asyncHandler(async (req, res, next) => {
     const token = jwt.sign({ user: existingUser.username }, "your-secret-key", {
       expiresIn: "1h",
     });
-    res.status(201).json({ token: token });
+    res.status(201).json({ token: token , message:"welcome", user:existingUser.username});
   } catch (error) {
     const customError = new Error("Unable to login user");
     customError.statusCode = constant.Internal_Server_Error;
