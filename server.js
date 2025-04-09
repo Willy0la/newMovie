@@ -12,6 +12,8 @@ import loginRou from "./router/user/loginRou.js";
 import authToken from "./middleWare/authenticateToken.js";
 import userUpd from "./router/user/updateRou.js";
 import idUser from "./router/user/usID.js";
+import findAll from "./router/user/findAll.js";
+import creCom from "./router/comment/createRou.js"
 
 const app = express();
 dotenv.config();
@@ -22,12 +24,17 @@ app.use(express.urlencoded({ extended: true }));
 Connectdb();
 
 
+
+//comment
+app.use("/api/v1/comment", creCom);
+
 //userAuth
 
 app.use("/api/v1/auth", registerRou);
 app.use("/api/v1/auth", loginRou);
 app.use("/api/v1/auth", userUpd)
 app.use("/api/v1/auth", idUser)
+app.use("/api/v1/auth", findAll)
 
 //userprofile
 app.use("/api/v1/user", create);
@@ -36,6 +43,7 @@ app.use("/api/v1/user",authToken, getById);
 app.use("/api/v1/user",authToken, userUpdate);
 app.use("/api/v1/user",authToken, deleteRouter);
 app.use(errorHandler);
+
 
 
 
