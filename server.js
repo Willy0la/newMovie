@@ -11,6 +11,7 @@ import registerRou from "./router/user/registerRou.js";
 import loginRou from "./router/user/loginRou.js";
 import authToken from "./middleWare/authenticateToken.js";
 import userUpd from "./router/user/updateRou.js";
+import idUser from "./router/user/usID.js";
 
 const app = express();
 dotenv.config();
@@ -26,6 +27,7 @@ Connectdb();
 app.use("/api/v1/auth", registerRou);
 app.use("/api/v1/auth", loginRou);
 app.use("/api/v1/auth", userUpd)
+app.use("/api/v1/auth", idUser)
 
 //userprofile
 app.use("/api/v1/user", create);
