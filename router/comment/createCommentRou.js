@@ -4,7 +4,7 @@ import createComment from "../../controller/commentController/createComment.js";
 
 const creCOm = express.Router();
 
-// Create Comment Route
-creCOm.post("/:id", createComment);
+
+creCOm.post("/", createComment);
 
 export default creCOm;

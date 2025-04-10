@@ -13,8 +13,25 @@ import authToken from "./middleWare/authenticateToken.js";
 import userUpd from "./router/user/updateRou.js";
 import idUser from "./router/user/usID.js";
 import findAll from "./router/user/findAll.js";
-import creCom from "./router/comment/createRou.js"
-
+import creCom from "./router/comment/createCommentRou.js"
+import updateRouter from "./router/movies/update.js";
+import getRouter from "./router/movies/gAM.js";
+import createRouter from "./router/movies/creaMov.js";
+import getByIdRouter from "./router/movies/gbyId.js";
+import createReviewRouter from "./router/reviews/createReviewRouter.js";
+import getReviewsRouter from "./router/reviews/getReviewsRouter.js";
+import getReviewByIdRouter from "./router/reviews/getReviewByIdRouter.js";
+import updateReviewRouter from "./router/reviews/updateReviewRouter.js";
+import deleteReviewRouter from "./router/reviews/deleteReviewRouter.js";
+import createGenreRouter from "./router/genre/createRouter.js";
+import getGenresRouter from "./router/genre/getRouter.js";
+import getGenreByIdRouter from "./router/genre/getSingleRouter.js";
+import updateGenreRouter from "./router/genre/updateRouter.js";
+import deleteGenreRouter from "./router/genre/deleteRouter.js";
+import delComment from "./router/comment/delComRou.js";
+import getAllCommRou from "./router/comment/getAllCommentRou.js";
+import getSingleCommRou from "./router/comment/getSingleComRou.js";
+import updatedComment from "./router/comment/updateCommRou.js";
 const app = express();
 dotenv.config();
 
@@ -22,11 +39,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 Connectdb();
-
-
+//genre
+app.use("/api/v1/genres", createGenreRouter);
+app.use("/api/v1/genres", getGenresRouter);
+app.use("/api/v1/genres", getGenreByIdRouter);
+app.use("/api/v1/genres", updateGenreRouter);
+app.use("/api/v1/genres", deleteGenreRouter);
+//reviews
+app.use("/api/v1/reviews", createReviewRouter);
+app.use("/api/v1/reviews", getReviewsRouter);
+app.use("/api/v1/reviews", getReviewByIdRouter);
+app.use("/api/v1/reviews", updateReviewRouter);
+app.use("/api/v1/reviews", deleteReviewRouter);
+//movie
+app.use("/api/v1/movies",createRouter );
+app.use("/api/v1/movies", getRouter);
+app.use("/api/v1/movies", getByIdRouter);
+app.use("/api/v1/movies", updateRouter);
+app.use("/api/v1/movies", deleteRouter);
 
 //comment
 app.use("/api/v1/comment", creCom);
+app.use("/api/v1/comment", delComment);
+app.use("/api/v1/comment", getAllCommRou);
+app.use("/api/v1/comment", getSingleCommRou);
+app.use("/api/v1/comment", updatedComment);
 
 //userAuth
 
