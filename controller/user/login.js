@@ -11,44 +11,52 @@ const login = asyncHandler(async (req, res, next) => {
   try {
     const { email, password, username } = req.body;
 
-    //
     if (!email || !password || !username) {
       const error = new Error("All fields are required");
       error.statusCode = constant.BAD_REQUEST;
-      next(error);
+      return next(error);
     }
 
     const existingUser = await userModel.findOne({ username });
 
     if (!existingUser) {
-      const error = new Error("User with userName not found");
+      const error = new Error("User with username not found");
       error.statusCode = constant.NOT_FOUND;
       return next(error);
     }
 
     if (existingUser.email !== email) {
-      const error = new Error("Unauthourised User");
+      const error = new Error("Unauthorized user");
       error.statusCode = constant.UNAUTHORIZED;
       return next(error);
     }
 
-    const isMatch = bcrypt.compare(password, existingUser.password);
+    const isMatch = await bcrypt.compare(password, existingUser.password);
 
     if (!isMatch) {
-      const error = new Error(" Invalid Password");
+      const error = new Error("Invalid password");
       error.statusCode = constant.UNAUTHORIZED;
       return next(error);
     }
 
-    const token = jwt.sign({ user: existingUser.username }, "your-secret-key", {
-      expiresIn: "1h",
+    const token = jwt.sign(
+      { user: existingUser.username },
+      process.env.ACCESS_TOKEN,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      token: token,
+      user: existingUser.username,
     });
-    res.status(201).json({ token: token , message:"welcome", user:existingUser.username});
   } catch (error) {
+    console.error(error);
     const customError = new Error("Unable to login user");
     customError.statusCode = constant.Internal_Server_Error;
     return next(customError);
   }
 });
+
 
 export default login;
