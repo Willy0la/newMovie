@@ -5,8 +5,9 @@ const deleteGenre = asyncHandler(async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   if (!genre) {
-    res.status(404);
-    throw new Error("Genre not found.");
+    const error = new Error("Genre not found.");
+    error.statusCode = constant.NOT_FOUND;
+    return next(error);
   }
 
   await genre.deleteOne();

@@ -1,14 +1,15 @@
 import asyncHandler from "express-async-handler";
 import Genre from "../../model/genre.js";
+import constant from "../../constants/constant.js";
 
-const updateGenre = asyncHandler(async (req, res) => {
+const updateGenre = asyncHandler(async (req, res, next) => {
   const { name, description } = req.body;
 
   const genre = await Genre.findById(req.params.id);
-
   if (!genre) {
-    res.status(404);
-    throw new Error("Genre not found.");
+    const error = new Error("Genre not found.");
+    error.statusCode = constant.NOT_FOUND;
+    return next(error);
   }
 
   genre.name = name || genre.name;

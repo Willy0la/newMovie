@@ -5,15 +5,18 @@ const createGenre = asyncHandler(async (req, res) => {
   const { name, description } = req.body;
 
   if (!name) {
-    res.status(400);
-    throw new Error("Genre name is required.");
+    const error = new Error("Genre name is required.");
+    error.statusCode = constant.BAD_REQUEST;
+    return next(error);
   }
 
   const existingGenre = await Genre.findOne({ name });
   if (existingGenre) {
-    res.status(400);
-    throw new Error("Genre already exists.");
+    const error = new Error("Genre exists.");
+    error.statusCode = constant.BAD_REQUEST;
+    return next(error);
   }
+  
 
   const genre = await Genre.create({ name, description });
 

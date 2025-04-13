@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import dotenv from "dotenv";
 import Connectdb from "./db.js";
 import errorHandler from "./middleWare/errorHandler.js";
@@ -35,10 +36,14 @@ import updatedComment from "./router/comment/updateCommRou.js";
 const app = express();
 dotenv.config();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 
 Connectdb();
+
+//middlewares
+app.use(morgan('tiny'))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //genre
 app.use("/api/v1/genres", createGenreRouter);
 app.use("/api/v1/genres", getGenresRouter);
