@@ -80,10 +80,10 @@ app.use("/api/v1/auth", findAll)
 
 //userprofile
 app.use("/api/v1/user", create);
-app.use("/api/v1/user",authToken, getAllUsers);
-app.use("/api/v1/user",authToken, getById);
-app.use("/api/v1/user",authToken, userUpdate);
-app.use("/api/v1/user",authToken, deleteRouter);
+app.use("/api/v1/user", getAllUsers);
+app.use("/api/v1/user", getById);
+app.use("/api/v1/user", userUpdate);
+app.use("/api/v1/user", deleteRouter);
 app.use(errorHandler);
 
 
