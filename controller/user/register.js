@@ -4,6 +4,7 @@ import constant from "../../constants/constant.js";
 import userModel from "../../model/user.js";
 import bcrypt from "bcryptjs";
 import validator from "validator"
+import jwt from"jsonwebtoken"
 
 const registerUser = asyncHandler(async (req, res, next) => {
   try {
@@ -42,19 +43,38 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
       return next(error);
     }
+
+   
     const newUser = await  userModel.create({
        name,
     username,
       password: hashPassword,
      email,
+   
     });
 
+    const token = jwt.sign({user: newUser._id}, process.env.ACCESS_TOKEN, {expiresIn:"1hr"})
+    if(!token){
+      const error = new Error("Token not found")
+      error.statusCode = constant.NOT_FOUND
+      return next(error)
+    }
 
-    return res.status(201).json({title:"User registered", message: newUser})
+    return res.status(201).json({
+      title:"User has been registered",
+      data:{
+        name:newUser.name,
+        username:newUser.username,
+        email:newUser.email,
+        token
+
+
+      }
+    })
   } catch (error) {
     const customError = new Error("User cannot be created");
     customError.statusCode = constant.Internal_Server_Error
-   return next(customError)
+    return next(customError)
   }
 });
 
