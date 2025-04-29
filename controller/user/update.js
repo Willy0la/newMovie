@@ -22,7 +22,8 @@ const updateController = asyncHandler(async (req, res, next) => {
       error.statusCode = constant.NOT_FOUND;
       return next(error);
     }
-   return res.status(201).json({ message: "user updated" });
+
+   return res.status(201).json({ message: "user updated", updatedUser });
   } catch (error) {
     const customError = new Error("Unable to update User");
     customError.statusCode = constant.Internal_Server_Error;

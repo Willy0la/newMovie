@@ -26,6 +26,7 @@ const userSche = new mongoose.Schema(
       lowercase: true,
      
     },
+    refreshToken:{type: String}
   },
   { timestamps: true }
 );

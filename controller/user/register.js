@@ -34,7 +34,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
       return next(error);
     }
 
-    const existingEmail = await userModel.findOne({email});
+    const existingEmail = await userModel.findOne({email:email});
 
     if (existingEmail) {
       const error = new Error("User with this email exists, kindly change it ");

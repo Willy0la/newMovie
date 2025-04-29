@@ -34,11 +34,12 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //adjusted routes
-app.use("/api/v1/movies",movieRouter );
-app.use("/api/v1/comment", commentRoute);
-app.use("/api/v1/genres", genreRoute);
-app.use("/api/v1/profile", profileRouter);
-app.use("/api/v1/reviews", reviewRouter);
+
+app.use("/api/v1/movies",authToken, movieRouter );
+app.use("/api/v1/comment",authToken,  commentRoute);
+app.use("/api/v1/genres", authToken, genreRoute);
+app.use("/api/v1/profile", authToken, profileRouter);
+app.use("/api/v1/reviews", authToken, reviewRouter);
 app.use("/api/v1/user", userRoute);
 
 
