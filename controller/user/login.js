@@ -17,6 +17,10 @@ const login = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
+  console.log("ACCESS_SECRET:", ACCESS_SECRET);
+console.log("REFRESH_SECRET:", REFRESH_SECRET);
+
+
   const existingUser = await userModel.findOne({ email });
   if (!existingUser) {
     const error = new Error("User not found");
@@ -51,7 +55,7 @@ const login = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     message: "Login successful",
     accessToken,
-    user: existingUser.username,
+    username: existingUser.username,
   });
 });
 
