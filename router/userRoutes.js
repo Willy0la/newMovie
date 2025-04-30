@@ -1,17 +1,14 @@
-import allGet from "../controller/user/getAllss.js"
 import express from "express"
-import login from "../controller/user/login.js"
-import registerUser from "../controller/user/register.js"
-import userById from "../controller/user/getUserId.js"
-import updateController from "../controller/user/update.js"
+import userController from "../controller/userController.js"
 
 
 const userRoute = express.Router()
 
-userRoute.get("/",  allGet)
-userRoute.get("/:id",  userById)
-userRoute.post("/login",  login)
-userRoute.post("/register",  registerUser)
-userRoute.put("/:id",  updateController)
+userRoute.get("/",  userController.allGet)
+userRoute.get("/:id",  userController.userById)
+userRoute.post("/login", userController.login)
+userRoute.post("/login", userController.refreshToken)
+userRoute.post("/register",  userController.registerUser)
+userRoute.put("/:id",  userController.updateController)
 
 export default userRoute

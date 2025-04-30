@@ -1,16 +1,11 @@
 import express from "express";
-import createGenre from "../controller/genre/createGenre.js";
-import deleteGenre from "../controller/genre/deleteGenre.js";
-import getGenres from "../controller/genre/getGenres.js";
-import getSingleGenre from "../controller/genre/getSingleGenre.js";
-import updateGenre from "../controller/genre/updateGenre.js";
+import genreController from "../controller/genreController.js"
 
 const genreRoute = express.Router();
-
-genreRoute.post("/create", createGenre);
-genreRoute.delete("/:id", deleteGenre);
-genreRoute.get("/", getGenres);
-genreRoute.get("/:id", getSingleGenre);
-genreRoute.put("/:id", updateGenre)
+genreRoute.post("/create",genreController.createGenre);
+genreRoute.delete("/:id",genreController.deleteGenre);
+genreRoute.get("/",genreController.getGenres);
+genreRoute.get("/:id",genreController.getSingleGenre);
+genreRoute.put("/:id",genreController.updateGenre)
 
 export default genreRoute;
