@@ -13,6 +13,7 @@ const authToken = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
+  console.log("Authorization Header:", authHeader);
   // Extract the token by splitting the "Bearer <token>" string
   const token = authHeader.split(" ")[1];
 

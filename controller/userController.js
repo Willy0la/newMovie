@@ -86,11 +86,7 @@ const login = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    const error = new Error("Bad ID formats");
-    error.statusCode = constant.BAD_REQUEST;
-    return next(error);
-  }
+
   
 
   console.log("ACCESS_SECRET:", process.env.ACCESS_TOKEN);

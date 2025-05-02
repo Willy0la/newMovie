@@ -7,7 +7,7 @@ dotenv.config();
 const ACCESS_SECRET = process.env.ACCESS_TOKEN;
 const REFRESH_SECRET = process.env.REFRESH_TOKEN;
 
-const wily = "Eat"
+
 
 if (!ACCESS_SECRET || !REFRESH_SECRET) {
   throw new Error("Missing access or refresh token secret in environment variables");
@@ -45,16 +45,16 @@ app.use(morgan('tiny'))
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//genre
 
 
-//reviews
+
+
 
 const emitter = new EventEmitter();
 emitter.setMaxListeners(20);
 
 
-//adjusted routes
+
 
 app.use("/api/v1/movies",authToken, movieRouter );
 app.use("/api/v1/comment",authToken,  commentRoute);
