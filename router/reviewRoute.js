@@ -1,12 +1,14 @@
-import express from "express";
-import reviewController from "../controller/reviewController.js";
+import express from "express"
+import userController from "../controller/userController.js"
 
-const reviewRouter = express.Router();
 
-reviewRouter.post("/create", reviewController.createReview);
-reviewRouter.get("/", reviewController.getReviews)
-reviewRouter.get("/:id", reviewController.getReviewById)
-reviewRouter.delete("/:id", reviewController.deleteReview)
-reviewRouter.put("/:id", reviewController.updateReview)
+const userRoute = express.Router()
 
-export default reviewRouter;
+userRoute.get("/",  userController.allGet)
+userRoute.get("/:id",  userController.userById)
+userRoute.post("/login", userController.login)
+userRoute.post("/login", userController.refreshToken)
+userRoute.post("/register",  userController.registerUser)
+userRoute.put("/:id",  userController.updateController)
+
+export default userRoute

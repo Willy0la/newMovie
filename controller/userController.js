@@ -6,8 +6,6 @@ import bcrypt from "bcryptjs";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 
-const REFRESH_SECRET = process.env.REFRESH_TOKEN;
-const ACCESS_SECRET = process.env.ACCESS_TOKEN;
 
 const registerUser = asyncHandler(async (req, res, next) => {
   try {
@@ -88,8 +86,15 @@ const login = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  console.log("ACCESS_SECRET:", ACCESS_SECRET);
-  console.log("REFRESH_SECRET:", REFRESH_SECRET);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const error = new Error("Bad ID formats");
+    error.statusCode = constant.BAD_REQUEST;
+    return next(error);
+  }
+  
+
+  console.log("ACCESS_SECRET:", process.env.ACCESS_TOKEN);
+  console.log("REFRESH_SECRET:",process.env.REFRESH_TOKEN);
 
   const existingUser = await userModel.findOne({ email });
   if (!existingUser) {
@@ -105,20 +110,20 @@ const login = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 
-  const accessToken = jwt.sign({ user: existingUser._id }, ACCESS_SECRET, {
+  const accessToken = jwt.sign({ user: existingUser._id }, process.env.ACCESS_TOKEN, {
     expiresIn: "15m",
   });
-  const refreshToken = jwt.sign({ user: existingUser._id }, REFRESH_SECRET, {
+  const refreshToken = jwt.sign({ user: existingUser._id }, process.env.REFRESH_TOKEN, {
     expiresIn: "7d",
   });
-  req.user = user;
-  next();
+ 
+
   existingUser.refreshToken = refreshToken;
   await existingUser.save();
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
@@ -168,8 +173,8 @@ const userById = asyncHandler(async (req, res, next) => {
 
     return res.status(200).json({ message: `User found \n \n`, user: UserId });
   } catch {
-    console.error("Error fetching User", error);
-    const customError = new Error("Unable to fecth  data User");
+     console.error("Error fetching User", error);
+    const customError = new Error("Unable to fetch User data");
     customError.statusCode = constant.Internal_Server_Error;
     return next(customError);
   }
@@ -204,16 +209,19 @@ const updateController = asyncHandler(async (req, res, next) => {
 
 const refreshToken = asyncHandler(async (req, res, next) => {
   const token = req.cookies.refreshToken;
-
+  console.log("Received cookies:", req.cookies);  // Logs cookies for debugging
+  
   if (!token) {
-    const error = new Error("Token doesn not exist");
+    const error = new Error("Token does not exist");
     error.statusCode = constant.UNAUTHORIZED;
-    next(error);
+    return next(error);
   }
+  
+ 
 
   try {
     //verifying the token using refresh token
-    const decode = jwt.verify(token, REFRESH_SECRET);
+    const decode = jwt.verify(token, process.env.REFRESH_TOKEN);
 
     //find user from  the decoded  token exist in the database
     const user = await userModel.findById(decode.user);
@@ -225,7 +233,7 @@ const refreshToken = asyncHandler(async (req, res, next) => {
       return next(error);
     }
 
-    const newAccessToken = jwt.sign({ user: user._id }, ACCESS_SECRET, {
+    const newAccessToken = jwt.sign({ user: user._id }, process.env.ACCESS_TOKEN, {
       expiresIn: "15m",
     });
 

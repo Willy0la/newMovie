@@ -14,4 +14,3 @@ const Connectdb = asyncHandler(async () => {
 });
 
 export default Connectdb;
-

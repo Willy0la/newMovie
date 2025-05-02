@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.7",
     "D": "^1.0.0",
     "dotenv": "^16.4.7",
+    "event-emitter": "^0.3.5",
     "express": "^4.21.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",

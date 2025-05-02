@@ -4,14 +4,21 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-console.log("Test ACCESS_TOKEN:", process.env.ACCESS_TOKEN); 
+const ACCESS_SECRET = process.env.ACCESS_TOKEN;
+const REFRESH_SECRET = process.env.REFRESH_TOKEN;
+
+const wily = "Eat"
+
+if (!ACCESS_SECRET || !REFRESH_SECRET) {
+  throw new Error("Missing access or refresh token secret in environment variables");
+}
 
 
 
 import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";  
-
+import { EventEmitter } from 'events';
 import Connectdb from "./db.js";
 import errorHandler from "./middleWare/errorHandler.js";
 import authToken from "./middleWare/authenticateToken.js";
@@ -31,8 +38,6 @@ import userRoute from "./router/userRoutes.js";
 const app = express();
 
 
-
-
 Connectdb();
 
 //middlewares
@@ -45,6 +50,8 @@ app.use(express.urlencoded({ extended: true }));
 
 //reviews
 
+const emitter = new EventEmitter();
+emitter.setMaxListeners(20);
 
 
 //adjusted routes
@@ -55,6 +62,7 @@ app.use("/api/v1/genres", authToken, genreRoute);
 app.use("/api/v1/profile", authToken, profileRouter);
 app.use("/api/v1/reviews", authToken, reviewRouter);
 app.use("/api/v1/user", userRoute);
+
 
 
 

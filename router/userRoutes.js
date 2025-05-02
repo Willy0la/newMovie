@@ -1,14 +1,15 @@
 import express from "express"
 import userController from "../controller/userController.js"
+import authToken from "../middleWare/authenticateToken.js"
 
 
 const userRoute = express.Router()
 
 userRoute.get("/",  userController.allGet)
-userRoute.get("/:id",  userController.userById)
+userRoute.get("/:id", authToken,  userController.userById)
 userRoute.post("/login", userController.login)
-userRoute.post("/login", userController.refreshToken)
+userRoute.post("/refresh", userController.refreshToken)
 userRoute.post("/register",  userController.registerUser)
-userRoute.put("/:id",  userController.updateController)
+userRoute.put("/:id", authToken,  userController.updateController)
 
 export default userRoute
