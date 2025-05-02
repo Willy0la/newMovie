@@ -15,7 +15,7 @@ const authToken = asyncHandler(async (req, res, next) => {
 
   console.log("Authorization Header:", authHeader);
   // Extract the token by splitting the "Bearer <token>" string
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1]?.trim();
 
   try {
     // Log the secret to check if it's correctly loaded
@@ -23,7 +23,7 @@ const authToken = asyncHandler(async (req, res, next) => {
 
     if (!process.env.ACCESS_TOKEN) {
       const error = new Error("ACCESS_TOKEN secret is missing in .env");
-      error.statusCode = constant.INTERNAL_SERVER_ERROR;
+      error.statusCode = constant.Internal_Server_Error;
       return next(error);
     }
 
